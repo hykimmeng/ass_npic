@@ -16,8 +16,8 @@ object NetworkConfig {
     private const val PORT = 81
     private const val API_ROOT = "school_api"
 
-    /** Host reachable from the Android emulator to your PC’s localhost. */
-    const val HOST_FOR_EMULATOR = "10.0.2.2"
+    /** Host reachable from a physical device on the same network to your PC’s localhost. */
+    const val HOST_FOR_EMULATOR = "192.168.1.37" // Changed from "10.0.2.2" for physical device
 
     /**
      * Trailing slash required for Retrofit paths like `api/login.php`.
