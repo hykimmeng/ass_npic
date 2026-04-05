@@ -5,15 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.assmobile.ui.navigation.MainDrawerScaffold
 import com.example.assmobile.ui.navigation.Screen
-import com.example.assmobile.ui.screens.*
+import com.example.assmobile.ui.screens.LoginScreen
+import com.example.assmobile.ui.screens.RegisterScreen
+import com.example.assmobile.ui.screens.WelcomeScreen
 import com.example.assmobile.ui.theme.AssmobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +24,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AssmobileTheme {
-                AppNavigation()
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    AppNavigation()
+                }
             }
         }
     }
@@ -32,39 +36,48 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.Splash.route) {
-        composable(Screen.Splash.route) {
-            SplashScreen(onNavigateToLogin = {
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Splash.route) { inclusive = true }
-                }
-            })
-        }
-        composable(Screen.Login.route) {
-            LoginScreen(onNavigateToHome = {
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }
-            })
-        }
-        composable(Screen.Home.route) {
-            HomeScreen(
-                onNavigate = { route -> navController.navigate(route) },
-                onLogout = {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Welcome.route
+    ) {
+        composable(Screen.Welcome.route) {
+            WelcomeScreen(
+                onContinue = {
                     navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Home.route) { inclusive = true }
+                        popUpTo(Screen.Welcome.route) { inclusive = true }
                     }
                 }
             )
         }
-        composable(Screen.RegisterStudent.route) {
-            RegisterStudentScreen(onBack = { navController.popBackStack() })
+        composable(Screen.Login.route) {
+            LoginScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Main.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
+            )
         }
-        composable(Screen.EnterScore.route) {
-            EnterScoreScreen(onBack = { navController.popBackStack() })
+        composable(Screen.Register.route) {
+            RegisterScreen(
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Register.route) { inclusive = true }
+                    }
+                }
+            )
         }
-        composable(Screen.SchoolInfo.route) {
-            SchoolInfoScreen(onBack = { navController.popBackStack() })
+        composable(Screen.Main.route) {
+            MainDrawerScaffold(
+                onLogout = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Main.route) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

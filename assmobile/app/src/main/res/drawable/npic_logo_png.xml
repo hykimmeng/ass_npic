@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder vector: replace with npic_logo_png.png in drawable-nodpi if you add the PNG asset. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <path
+        android:fillColor="#1E88E5"
+        android:pathData="M100,20 L160,60 L160,140 L100,180 L40,140 L40,60 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M85,70 L115,70 L115,130 L85,130 Z" />
+</vector>

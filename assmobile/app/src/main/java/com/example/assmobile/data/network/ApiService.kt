@@ -9,6 +9,9 @@ interface ApiService {
     @POST("api/login.php")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 
+    @POST("api/register.php")
+    suspend fun register(@Body request: RegisterRequest): Response<LoginResponse>
+
     @GET("api/students.php")
     suspend fun getStudents(): Response<List<Student>>
 

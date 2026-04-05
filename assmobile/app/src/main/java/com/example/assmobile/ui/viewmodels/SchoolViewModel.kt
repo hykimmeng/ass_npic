@@ -85,6 +85,10 @@ class SchoolViewModel : ViewModel() {
             }
         }
     }
+
+    fun clearMessages() {
+        _uiState.value = UiState.Idle
+    }
 }
 
 sealed class UiState {

@@ -8,6 +8,10 @@ class AuthRepository {
     suspend fun login(request: LoginRequest): Response<LoginResponse> {
         return RetrofitClient.instance.login(request)
     }
+
+    suspend fun register(request: RegisterRequest): Response<LoginResponse> {
+        return RetrofitClient.instance.register(request)
+    }
 }
 
 class StudentRepository {

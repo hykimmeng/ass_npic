@@ -41,25 +41,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.assmobile.ui.viewmodels.AuthViewModel
-import com.example.assmobile.ui.viewmodels.LoginState
+import com.example.assmobile.ui.viewmodels.RegisterState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
-    onNavigateToHome: () -> Unit,
-    onNavigateToRegister: () -> Unit,
+fun RegisterScreen(
+    onNavigateToLogin: () -> Unit,
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirm by remember { mutableStateOf("") }
     var isAdmin by remember { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
 
     val viewModel: AuthViewModel = viewModel()
-    val state by viewModel.loginState.collectAsState()
+    val state by viewModel.registerState.collectAsState()
 
     LaunchedEffect(state) {
-        if (state is LoginState.Success) {
-            onNavigateToHome()
+        if (state is RegisterState.Success) {
+            viewModel.resetRegisterState()
+            onNavigateToLogin()
         }
     }
 
@@ -72,13 +73,13 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Welcome back",
+            text = "Create account",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = "Sign in as Admin or User",
+            text = "Register as Admin or User",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -116,6 +117,18 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        OutlinedTextField(
+            value = confirm,
+            onValueChange = { confirm = it },
+            label = { Text("Confirm password") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
@@ -131,36 +144,46 @@ fun LoginScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        if (state is LoginState.Error) {
+        if (state is RegisterState.Error) {
             Text(
-                text = (state as LoginState.Error).message,
+                text = (state as RegisterState.Error).message,
                 color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
         }
 
+        val mismatch = password.isNotEmpty() && confirm.isNotEmpty() && password != confirm
+        if (mismatch) {
+            Text("Passwords do not match", color = MaterialTheme.colorScheme.error)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
         Button(
-            onClick = { viewModel.login(username, password, if (isAdmin) "admin" else "user") },
+            onClick = {
+                if (password == confirm) {
+                    viewModel.register(username, password, if (isAdmin) "admin" else "user")
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp),
-            enabled = state !is LoginState.Loading
+            enabled = state !is RegisterState.Loading && username.isNotBlank() && password.isNotBlank() && password == confirm
         ) {
-            if (state is LoginState.Loading) {
+            if (state is RegisterState.Loading) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.height(24.dp)
                 )
             } else {
-                Text("Login", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                Text("Register", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
             }
         }
 
-        TextButton(onClick = onNavigateToRegister) {
-            Text("Create an account")
+        TextButton(onClick = onNavigateToLogin) {
+            Text("Already have an account? Sign in")
         }
     }
 }

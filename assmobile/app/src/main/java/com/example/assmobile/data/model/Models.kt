@@ -8,6 +8,12 @@ data class LoginRequest(
     @SerializedName("role") val role: String
 )
 
+data class RegisterRequest(
+    @SerializedName("username") val username: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("role") val role: String
+)
+
 data class LoginResponse(
     @SerializedName("status") val status: String,
     @SerializedName("message") val message: String,
@@ -16,28 +22,34 @@ data class LoginResponse(
     @SerializedName("role") val role: String? = null
 )
 
+/** Matches `students` table — gender: 'male' | 'female' */
 data class Student(
     @SerializedName("student_id") val studentId: String,
     @SerializedName("name") val name: String,
     @SerializedName("gender") val gender: String,
-    @SerializedName("dob") val dob: String,
-    @SerializedName("class_name") val className: String
+    @SerializedName("date_of_birth") val dateOfBirth: String? = null,
+    @SerializedName("class") val className: String? = null,
+    @SerializedName("phone") val phone: String? = null,
+    @SerializedName("address") val address: String? = null
 )
 
+/** Matches `scores` table */
 data class Score(
-    @SerializedName("id") val id: String? = null,
+    @SerializedName("id") val id: Int? = null,
     @SerializedName("student_id") val studentId: String,
     @SerializedName("subject") val subject: String,
     @SerializedName("score") val score: Double,
-    @SerializedName("date") val date: String? = null
+    @SerializedName("semester") val semester: String? = null,
+    @SerializedName("year") val year: String? = null
 )
 
+/** Matches `school_info` table */
 data class SchoolInfo(
     @SerializedName("school_name") val schoolName: String,
     @SerializedName("address") val address: String,
     @SerializedName("phone") val phone: String,
     @SerializedName("email") val email: String,
-    @SerializedName("website") val website: String
+    @SerializedName("principal") val principal: String
 )
 
 data class ApiResponse<T>(
