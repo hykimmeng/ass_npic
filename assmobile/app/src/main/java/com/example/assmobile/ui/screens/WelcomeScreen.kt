@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,12 +56,11 @@ fun WelcomeScreen(onContinue: () -> Unit) {
     }
 
     val scheme = MaterialTheme.colorScheme
-    // Light backdrop so navy / red / white NPIC crest reads clearly (transparent PNG)
     val gradient = Brush.verticalGradient(
         colors = listOf(
-            Color(0xFFF8FAFC),
-            Color(0xFFF1F5F9),
-            scheme.surface
+            scheme.primary.copy(alpha = 0.08f),
+            scheme.surface,
+            scheme.primaryContainer.copy(alpha = 0.35f)
         )
     )
 
@@ -76,24 +77,26 @@ fun WelcomeScreen(onContinue: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Portrait shield logo: tall box, image centered with Fit (no crop)
+            // nipc_logo_png.png — portrait crest; smaller frame + Fit keeps proportions
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(320.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+                    .widthIn(max = 200.dp)
+                    .height(188.dp)
                     .shadow(
-                        elevation = 10.dp,
-                        shape = RoundedCornerShape(24.dp),
-                        ambientColor = Color(0x1A1E3A5F),
-                        spotColor = Color(0x261E3A5F)
+                        elevation = 6.dp,
+                        shape = RoundedCornerShape(18.dp),
+                        ambientColor = scheme.primary.copy(alpha = 0.18f),
+                        spotColor = scheme.primary.copy(alpha = 0.22f)
                     )
-                    .clip(RoundedCornerShape(24.dp))
+                    .clip(RoundedCornerShape(18.dp))
                     .background(Color.White)
-                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.npic_logo_png),
+                    painter = painterResource(id = R.drawable.nipc_logo_png),
                     contentDescription = "NPIC Logo",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -110,7 +113,7 @@ fun WelcomeScreen(onContinue: () -> Unit) {
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
-                color = Color(0xFF1E3A5F),
+                color = scheme.primary,
                 textAlign = TextAlign.Center,
                 letterSpacing = 0.5.sp,
                 modifier = Modifier.alpha(alphaAnim.value)

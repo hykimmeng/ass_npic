@@ -35,23 +35,24 @@ private data class DashboardItem(
     val title: String,
     val icon: ImageVector,
     val route: String,
-    val color: Color
+    val tint: Color
 )
 
 @Composable
 fun HomeDashboardContent(onOpenRoute: (String) -> Unit) {
+    val scheme = MaterialTheme.colorScheme
     val items = listOf(
         DashboardItem(
             "Student Management",
             Icons.Default.Groups,
             Screen.StudentManagement.route,
-            Color(0xFF42A5F5)
+            scheme.primary
         ),
         DashboardItem(
             "School Info",
             Icons.Default.School,
             Screen.SchoolInfoDrawer.route,
-            Color(0xFFFFA726)
+            scheme.secondary
         ),
     )
 
@@ -91,7 +92,7 @@ fun HomeDashboardContent(onOpenRoute: (String) -> Unit) {
                             Icon(
                                 imageVector = item.icon,
                                 contentDescription = null,
-                                tint = item.color,
+                                tint = item.tint,
                                 modifier = Modifier.size(48.dp)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
