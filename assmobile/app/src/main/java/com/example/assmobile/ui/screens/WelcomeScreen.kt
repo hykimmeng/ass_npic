@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,11 +54,12 @@ fun WelcomeScreen(onContinue: () -> Unit) {
     }
 
     val scheme = MaterialTheme.colorScheme
+    // Light backdrop so navy / red / white NPIC crest reads clearly (transparent PNG)
     val gradient = Brush.verticalGradient(
         colors = listOf(
-            scheme.primary.copy(alpha = 0.14f),
-            scheme.surface,
-            scheme.surfaceVariant.copy(alpha = 0.35f)
+            Color(0xFFF8FAFC),
+            Color(0xFFF1F5F9),
+            scheme.surface
         )
     )
 
@@ -71,43 +72,45 @@ fun WelcomeScreen(onContinue: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Centered logo from drawable/npic_logo_png.png — fits inside card without cropping
+            // Portrait shield logo: tall box, image centered with Fit (no crop)
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .height(320.dp)
                     .shadow(
-                        elevation = 12.dp,
-                        shape = RoundedCornerShape(28.dp),
-                        ambientColor = scheme.primary.copy(alpha = 0.25f),
-                        spotColor = scheme.primary.copy(alpha = 0.35f)
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(24.dp),
+                        ambientColor = Color(0x1A1E3A5F),
+                        spotColor = Color(0x261E3A5F)
                     )
-                    .clip(RoundedCornerShape(28.dp))
-                    .background(Color.White.copy(alpha = 0.92f))
-                    .padding(20.dp)
-                    .size(260.dp),
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(Color.White)
+                    .padding(horizontal = 24.dp, vertical = 20.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.npic_logo_png),
-                    contentDescription = "School logo",
+                    contentDescription = "NPIC Logo",
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
+                        .fillMaxHeight()
                         .alpha(alphaAnim.value),
                     contentScale = ContentScale.Fit
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             Text(
                 text = "Welcome",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
-                color = scheme.primary,
+                color = Color(0xFF1E3A5F),
                 textAlign = TextAlign.Center,
                 letterSpacing = 0.5.sp,
                 modifier = Modifier.alpha(alphaAnim.value)
