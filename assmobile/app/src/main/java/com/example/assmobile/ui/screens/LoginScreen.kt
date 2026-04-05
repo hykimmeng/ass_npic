@@ -51,11 +51,15 @@ fun LoginScreen(
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isAdmin by remember { mutableStateOf(false) }
+    var isAdmin by remember { mutableStateOf(true) }
     var passwordVisible by remember { mutableStateOf(false) }
 
     val viewModel: AuthViewModel = viewModel()
     val state by viewModel.loginState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.resetLoginState()
+    }
 
     LaunchedEffect(state) {
         if (state is LoginState.Success) {
@@ -89,6 +93,7 @@ fun LoginScreen(
             value = username,
             onValueChange = { username = it },
             label = { Text("Username") },
+            placeholder = { Text("admin") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             singleLine = true
@@ -100,6 +105,7 @@ fun LoginScreen(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
+            placeholder = { Text("admin123") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -130,6 +136,14 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Default admin: username admin, password admin123 (Administrator on)",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 

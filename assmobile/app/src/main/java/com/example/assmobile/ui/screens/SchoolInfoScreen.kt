@@ -35,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.assmobile.data.model.SchoolInfo
 import com.example.assmobile.ui.viewmodels.SchoolViewModel
@@ -45,7 +47,8 @@ fun SchoolInfoScreen(
     onBack: (() -> Unit)? = null,
     showBack: Boolean = true,
 ) {
-    val viewModel: SchoolViewModel = viewModel()
+    val activity = LocalContext.current as ComponentActivity
+    val viewModel: SchoolViewModel = viewModel(viewModelStoreOwner = activity)
     val schoolInfo by viewModel.schoolInfo.collectAsState()
 
     if (showBack && onBack != null) {

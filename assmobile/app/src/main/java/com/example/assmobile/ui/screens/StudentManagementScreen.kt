@@ -33,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.assmobile.data.model.Score
 import com.example.assmobile.data.model.Student
@@ -45,9 +47,14 @@ fun StudentManagementScreen() {
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("Add student", "Enter scores")
 
-    val viewModel: SchoolViewModel = viewModel()
+    val activity = LocalContext.current as ComponentActivity
+    val viewModel: SchoolViewModel = viewModel(viewModelStoreOwner = activity)
     val uiState by viewModel.uiState.collectAsState()
     val students by viewModel.students.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadStudents()
+    }
 
     LaunchedEffect(tabIndex) {
         viewModel.clearMessages()

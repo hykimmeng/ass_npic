@@ -2,8 +2,14 @@ package com.example.assmobile.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.assmobile.data.model.*
-import com.example.assmobile.data.repository.*
+import com.example.assmobile.data.model.SchoolInfo
+import com.example.assmobile.data.model.Score
+import com.example.assmobile.data.model.Student
+import com.example.assmobile.data.network.httpErrorDetail
+import com.example.assmobile.data.network.isApiSuccess
+import com.example.assmobile.data.repository.ScoreRepository
+import com.example.assmobile.data.repository.SchoolRepository
+import com.example.assmobile.data.repository.StudentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -27,15 +33,15 @@ class SchoolViewModel : ViewModel() {
         loadSchoolInfo()
     }
 
-    private fun loadStudents() {
+    fun loadStudents() {
         viewModelScope.launch {
             try {
                 val response = studentRepo.getStudents()
                 if (response.isSuccessful) {
                     _students.value = response.body() ?: emptyList()
                 }
-            } catch (e: Exception) {
-                // Handle error
+            } catch (_: Exception) {
+                // Keep list empty; user can retry after login/session
             }
         }
     }
@@ -47,8 +53,7 @@ class SchoolViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     _schoolInfo.value = response.body()
                 }
-            } catch (e: Exception) {
-                // Handle error
+            } catch (_: Exception) {
             }
         }
     }
@@ -59,10 +64,20 @@ class SchoolViewModel : ViewModel() {
             try {
                 val response = studentRepo.register(student)
                 if (response.isSuccessful) {
-                    _uiState.value = UiState.Success("Student registered successfully")
-                    loadStudents()
+                    val body = response.body()
+                    val ok = body == null || body.isApiSuccess()
+                    if (ok) {
+                        _uiState.value = UiState.Success(
+                            body?.message?.ifBlank { null } ?: "Student registered successfully"
+                        )
+                        loadStudents()
+                    } else {
+                        _uiState.value = UiState.Error(
+                            body?.message?.takeIf { it.isNotBlank() } ?: "Failed to register student"
+                        )
+                    }
                 } else {
-                    _uiState.value = UiState.Error(response.body()?.message ?: "Failed to register")
+                    _uiState.value = UiState.Error(response.httpErrorDetail("Failed to register student"))
                 }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.localizedMessage ?: "Unknown error")
@@ -76,9 +91,19 @@ class SchoolViewModel : ViewModel() {
             try {
                 val response = scoreRepo.postScore(score)
                 if (response.isSuccessful) {
-                    _uiState.value = UiState.Success("Score saved successfully")
+                    val body = response.body()
+                    val ok = body == null || body.isApiSuccess()
+                    if (ok) {
+                        _uiState.value = UiState.Success(
+                            body?.message?.ifBlank { null } ?: "Score saved successfully"
+                        )
+                    } else {
+                        _uiState.value = UiState.Error(
+                            body?.message?.takeIf { it.isNotBlank() } ?: "Failed to save score"
+                        )
+                    }
                 } else {
-                    _uiState.value = UiState.Error(response.body()?.message ?: "Failed to save score")
+                    _uiState.value = UiState.Error(response.httpErrorDetail("Failed to save score"))
                 }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.localizedMessage ?: "Unknown error")
