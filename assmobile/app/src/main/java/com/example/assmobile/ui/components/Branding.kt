@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,7 +42,7 @@ fun BrandedTopBar(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.nipc_logo_png),
+                    painter = painterResource(id = R.drawable.npic_logo_png),
                     contentDescription = null,
                     modifier = Modifier.size(36.dp),
                     contentScale = ContentScale.Fit
@@ -60,7 +60,7 @@ fun BrandedTopBar(
         navigationIcon = {
             if (onBack != null) {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
             }
         },
@@ -81,7 +81,7 @@ fun HomeLogoHeader(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.nipc_logo_png),
+            painter = painterResource(id = R.drawable.npic_logo_png),
             contentDescription = "NPIC Logo",
             modifier = Modifier.size(56.dp),
             contentScale = ContentScale.Fit

@@ -57,7 +57,7 @@ fun RegisterScreen(
     val viewModel: AuthViewModel = viewModel()
     val state by viewModel.registerState.collectAsState()
 
-    LaunchedEffect(state) {
+    LaunchedEffect(state is RegisterState.Success) {
         if (state is RegisterState.Success) {
             viewModel.resetRegisterState()
             onNavigateToLogin()

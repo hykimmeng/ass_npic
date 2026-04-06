@@ -62,13 +62,11 @@ fun LoginScreen(
         viewModel.resetLoginState()
     }
 
-    LaunchedEffect(state) {
-        when (val s = state) {
-            is LoginState.Success -> {
-                SessionStore.displayName = s.response.username ?: s.response.userId
-                onNavigateToHome()
-            }
-            else -> {}
+    // Keyed on success so we navigate once per login, not on every recomposition.
+    LaunchedEffect(state is LoginState.Success) {
+        if (state is LoginState.Success) {
+            SessionStore.displayName = state.response.username ?: state.response.userId
+            onNavigateToHome()
         }
     }
 

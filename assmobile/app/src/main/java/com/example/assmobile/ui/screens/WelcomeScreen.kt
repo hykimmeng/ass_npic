@@ -77,7 +77,7 @@ fun WelcomeScreen(onContinue: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // nipc_logo_png.png — portrait crest; smaller frame + Fit keeps proportions
+            // npic_logo_png.png — official NPIC crest; centered, Fit keeps proportions
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,7 +96,7 @@ fun WelcomeScreen(onContinue: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.nipc_logo_png),
+                    painter = painterResource(id = R.drawable.npic_logo_png),
                     contentDescription = "NPIC Logo",
                     modifier = Modifier
                         .fillMaxWidth()

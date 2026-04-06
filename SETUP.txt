@@ -1,6 +1,12 @@
 NIPC School — XAMPP setup (Apache 81, MySQL 3307)
 ==================================================
 
+0) Gradle / Android Studio on Windows
+   - If Gradle reports: JAVA_HOME is set to an invalid directory pointing to ...\jdk\bin
+     set JAVA_HOME to the JDK folder only (no \bin), e.g.
+     C:\Program Files\Java\jdk-22
+   - Then restart the IDE terminal and run: gradlew assembleDebug
+
 1) MySQL (port 3307)
    - Open phpMyAdmin using port 3307, or import from command line:
      mysql -u root -P 3307 -h 127.0.0.1 < database/nipc_school.sql
