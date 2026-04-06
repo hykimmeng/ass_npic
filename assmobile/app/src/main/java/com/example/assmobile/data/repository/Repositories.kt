@@ -2,11 +2,16 @@ package com.example.assmobile.data.repository
 
 import com.example.assmobile.data.model.*
 import com.example.assmobile.data.network.RetrofitClient
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 class AuthRepository {
     suspend fun login(request: LoginRequest): Response<LoginResponse> {
         return RetrofitClient.instance.login(request)
+    }
+
+    suspend fun logout(): Response<ResponseBody> {
+        return RetrofitClient.instance.logout()
     }
 
     suspend fun register(request: RegisterRequest): Response<LoginResponse> {

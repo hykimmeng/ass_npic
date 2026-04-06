@@ -40,6 +40,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.assmobile.SessionStore
 import com.example.assmobile.ui.viewmodels.AuthViewModel
 import com.example.assmobile.ui.viewmodels.LoginState
 
@@ -62,8 +63,12 @@ fun LoginScreen(
     }
 
     LaunchedEffect(state) {
-        if (state is LoginState.Success) {
-            onNavigateToHome()
+        when (val s = state) {
+            is LoginState.Success -> {
+                SessionStore.displayName = s.response.username ?: s.response.userId
+                onNavigateToHome()
+            }
+            else -> {}
         }
     }
 

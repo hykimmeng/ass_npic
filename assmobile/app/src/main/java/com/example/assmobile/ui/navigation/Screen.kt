@@ -4,11 +4,8 @@ sealed class Screen(val route: String) {
     data object Welcome : Screen("welcome")
     data object Login : Screen("login")
     data object Register : Screen("register")
-    /** Shell with navigation drawer (dashboard + inner routes). */
-    data object Main : Screen("main")
-
-    /** Inner destinations shown inside [com.example.assmobile.ui.navigation.MainDrawerScaffold]. */
-    data object Dashboard : Screen("dashboard")
-    data object StudentManagement : Screen("student_management")
-    data object SchoolInfoDrawer : Screen("school_info_drawer")
+    /** After login: logo + two action buttons. */
+    data object Home : Screen("home")
+    data object StudentRegistration : Screen("student_registration")
+    data object StudentScoreEntry : Screen("student_score_entry")
 }

@@ -1,6 +1,7 @@
 package com.example.assmobile.data.network
 
 import com.example.assmobile.data.model.*
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -8,6 +9,9 @@ interface ApiService {
 
     @POST("api/login.php")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+
+    @POST("api/logout.php")
+    suspend fun logout(): Response<ResponseBody>
 
     @POST("api/register.php")
     suspend fun register(@Body request: RegisterRequest): Response<LoginResponse>

@@ -1,0 +1,22 @@
+NIPC School — XAMPP setup (Apache 81, MySQL 3307)
+==================================================
+
+1) MySQL (port 3307)
+   - Open phpMyAdmin using port 3307, or import from command line:
+     mysql -u root -P 3307 -h 127.0.0.1 < database/nipc_school.sql
+   - Default user root with empty password (matches school_api/config/database.php).
+
+2) PHP API
+   - Copy the folder "school_api" to: C:\xampp\htdocs\school_api
+   - So these URLs work:
+     http://localhost:81/school_api/index.php
+     http://localhost:81/school_api/api/login.php
+
+3) Android app
+   - Emulator: NetworkConfig uses 10.0.2.2 → your PC’s localhost.
+   - Real phone: set HOST_FOR_EMULATOR in NetworkConfig.kt to your PC LAN IP.
+
+4) Test login
+   - Username: admin
+   - Password: admin123
+   - Role: Administrator (sends role "admin")

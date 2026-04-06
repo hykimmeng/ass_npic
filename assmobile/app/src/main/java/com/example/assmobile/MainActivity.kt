@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.assmobile.ui.navigation.MainDrawerScaffold
 import com.example.assmobile.ui.navigation.Screen
 import com.example.assmobile.ui.screens.LoginScreen
+import com.example.assmobile.ui.screens.PostLoginHomeScreen
 import com.example.assmobile.ui.screens.RegisterScreen
+import com.example.assmobile.ui.screens.StudentRegistrationScreen
+import com.example.assmobile.ui.screens.StudentScoreEntryScreen
 import com.example.assmobile.ui.screens.WelcomeScreen
 import com.example.assmobile.ui.theme.AssmobileTheme
 
@@ -52,7 +54,7 @@ fun AppNavigation() {
         composable(Screen.Login.route) {
             LoginScreen(
                 onNavigateToHome = {
-                    navController.navigate(Screen.Main.route) {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
@@ -70,13 +72,31 @@ fun AppNavigation() {
                 }
             )
         }
-        composable(Screen.Main.route) {
-            MainDrawerScaffold(
+        composable(Screen.Home.route) {
+            PostLoginHomeScreen(
+                usernameHint = SessionStore.displayName,
+                onStudentRegistration = {
+                    navController.navigate(Screen.StudentRegistration.route)
+                },
+                onStudentScores = {
+                    navController.navigate(Screen.StudentScoreEntry.route)
+                },
                 onLogout = {
+                    SessionStore.displayName = null
                     navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Main.route) { inclusive = true }
+                        popUpTo(Screen.Home.route) { inclusive = true }
                     }
                 }
+            )
+        }
+        composable(Screen.StudentRegistration.route) {
+            StudentRegistrationScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.StudentScoreEntry.route) {
+            StudentScoreEntryScreen(
+                onBack = { navController.popBackStack() }
             )
         }
     }
