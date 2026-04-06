@@ -14,9 +14,9 @@ object RetrofitClient {
 
     private val client = OkHttpClient.Builder()
         .cookieJar(AppCookieJar())
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(5, TimeUnit.SECONDS)
+        .readTimeout(5, TimeUnit.SECONDS)
+        .writeTimeout(5, TimeUnit.SECONDS)
         .addInterceptor(logging)
         .build()
 

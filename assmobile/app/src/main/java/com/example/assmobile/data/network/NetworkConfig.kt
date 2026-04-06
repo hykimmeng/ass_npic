@@ -15,7 +15,7 @@ object NetworkConfig {
     private const val PORT = 81
     private const val API_ROOT = "school_api"
 
-    const val HOST_FOR_EMULATOR = "10.0.2.2"
+    const val HOST_FOR_EMULATOR = "192.168.1.37"
 
     const val BASE_URL = "http://$HOST_FOR_EMULATOR:$PORT/$API_ROOT/"
 
